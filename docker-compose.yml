@@ -1,0 +1,20 @@
+version: '3.8'
+
+services:
+  app:
+    build: .
+    command: >
+      sh -c "python populate.py && python -u app.py"
+    ports:
+      - "5000:5000"
+    volumes:
+      - .:/dashboard_app
+  db:
+    image: mongo:7.0
+    hostname: container_as_db
+    environment:
+      - MONGO_INITDB_DATABASE=mongodb
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=pass
+    ports:
+      - "27017:27017"

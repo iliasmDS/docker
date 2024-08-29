@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dashboard-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: dashboard-app
+  template:
+    metadata:
+      labels:
+        app: dashboard-app
+    spec:
+      containers:
+        - name: dashboard-app
+          image: imougios/unipi:dashboard_app
+          command: ["sh", "-c", "python populate.py && python -u app.py"]
+          ports:
+            - containerPort: 5000
+          env:
+            - name: MONGO_URI
+              value: "mongodb://root:pass@mongo:27017/mongodb"  # MongoDB connection string
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: dashboard-app
+spec:
+  selector:
+    app: dashboard-app
+  ports:
+    - protocol: TCP
+      port: 5000
+      targetPort: 5000
+  type: NodePort

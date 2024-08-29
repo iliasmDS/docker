@@ -1,0 +1,10 @@
+
+flask
+
+pymongo
+
+matplotlib
+
+pandas
+
+numpy
